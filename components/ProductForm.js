@@ -1,7 +1,6 @@
 import { useRouter } from "next/router"
 import { useState } from "react"
 import axios from "axios"
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
 
 export default function ProductForm({
     _id,
@@ -16,7 +15,6 @@ export default function ProductForm({
     const [goToProducts, setGoToProducts] = useState(false)
 
     const router = useRouter()
-    const storage = getStorage()
 
     async function saveProduct(e) {
         e.preventDefault()
@@ -40,26 +38,20 @@ export default function ProductForm({
         setGoToProducts(true)
     }
 
-    async function uploadImages(e) {
-        const files = e.target?.files
-        if (files?.length > 0) {
+    /*  async function uploadImages(e) {
+        const file = e.target?.files[0]
+
+         if (files?.length > 0) {
             const data = new FormData()
             for (const file of files) {
                 data.append("file", file)
             }
-            const resp = await axios.post("/api/upload", data, {
-                headers: { "Content-Type": "multipart/form-data" },
-            })
+
+        if (file) {
+            const resp = await axios.post("/api/upload", data)
             console.log(resp.data)
         }
-
-        const fileRef = ref(storage, "images")
-        uploadBytes(fileRef, "file").then(file => {
-            getDownloadURL(fileRef).then(url => {
-                // do something
-            })
-        })
-    }
+    } */
 
     if (goToProducts) {
         router.push("/products")
@@ -91,7 +83,7 @@ export default function ProductForm({
                         />
                     </svg>
                     Upload
-                    <input type="file" className="hidden" onChange={uploadImages} />
+                    <input type="file" className="hidden" />
                 </label>
                 {!images?.length && <div>No photos in this product</div>}
             </div>

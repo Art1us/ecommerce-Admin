@@ -1,16 +1,17 @@
 import multiparty from "multiparty"
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
+import { storage } from "../../firebase"
 
 export default async function handle(req, res) {
-    const form = new multiparty.Form()
-    const { fields, files } = await new Promise((resolve, reject) => {
-        form.parse(req, (err, fields, files) => {
-            if (err) return reject(err)
-            resolve({ fields, files })
+    console.log(req)
+    /* const fileRef = ref(storage, "images")
+    uploadBytes(fileRef, "file").then(file => {
+        getDownloadURL(fileRef).then(url => {
+            console.log(url)
+            return res.json("ok")
         })
-    })
-    console.log("length", files.file.length)
-
-    return res.json("ok")
+    }) */
+    return res.json(req)
 }
 
 export const config = {
